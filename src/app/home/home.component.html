@@ -1,0 +1,36 @@
+<h1>/detik</h1>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Date">
+      <th mat-header-cell *matHeaderCellDef> Tanggal </th>
+      <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="CarbonDiokside">
+      <th mat-header-cell *matHeaderCellDef> Karbon Dioksida </th>
+      <td mat-cell *matCellDef="let element"> {{element.CarbonDiokside}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Humadity">
+      <th mat-header-cell *matHeaderCellDef> Kelembaban </th>
+      <td mat-cell *matCellDef="let element"> {{element.Humadity}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Temperatur">
+      <th mat-header-cell *matHeaderCellDef> Temperatur </th>
+      <td mat-cell *matCellDef="let element"> {{element.Temperatur}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[100, 1000, 10000]" showFirstLastButtons></mat-paginator>
+</div>
