@@ -1,6 +1,6 @@
-<h1>/detik</h1>
 
-<div class="mat-elevation-z8">
+<h1>/Data Tabel</h1>
+<div >
   <table mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="id">
@@ -32,5 +32,20 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[100, 1000, 10000]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[100, 1000, 10000]" showFirstLastButtons style="margin-bottom:50px"></mat-paginator>
+</div>
+
+<h1>/Karbon Dioksida</h1>
+<div *ngIf="chartKarbonDioksida">
+<canvas id="canvas">{{ chartKarbonDioksida }}</canvas>
+</div>
+
+<h1>/Kelembaban</h1>
+<div *ngIf="chartKelembaban">
+<canvas id="canvas_">{{ chartKelembaban }}</canvas>
+</div>
+
+<h1>/Temperatur</h1>
+<div *ngIf="chartTemperatur">
+<canvas id="canvas__">{{ chartTemperatur }}</canvas>
 </div>
