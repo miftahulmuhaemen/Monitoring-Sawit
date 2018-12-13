@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { DataService } from '../data.service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { HttpClient} from '@angular/common/http';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -10,77 +11,147 @@ import { Chart } from 'chart.js';
 })
 export class HomeComponent implements OnInit {
 
-    displayedColumns: string[] = ['id', 'Date', 'CarbonDiokside', 'Humadity', 'Temperatur'];
-    dataSource = new MatTableDataSource<Elements>();
+    displayedColumns: string[] = ['Time', 'CarbonDiokside', 'Humadity', 'Temperatur'];
+    displayedColumnsAll: string[] = ['id', 'Date', 'Time', 'CarbonDiokside', 'Humadity', 'Temperatur'];
+    dataSource = new MatTableDataSource<any>();
+
+    visible = false;
+    selected : number = 0;
+
+    CarbonDioxide = [];
+    Humidity = [];
+    Temperature = [];
+    Time = [];
+
+    chartCO = []
+    chartHumidity = []
+    chartTemperature = []
+
+    canvasCO2 = document.getElementById("canvasCO2");
+    canvasHumidity = document.getElementById("canvasHumidity");
+    canvasTemperature = document.getElementById("canvasTemperature");
+ 
+
+    dataSourceStatic = new MatTableDataSource<any>();
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    chartKarbonDioksida = []
-    chartKelembaban = []
-    chartTemperatur = []
-
-
-  constructor(private Data : DataService) { }
+  constructor(private Data : DataService, private http: HttpClient) { }
 
   ngOnInit() {
 
+    this.dataOnAttach()
+    setInterval(()=> {
+              this.dataOnAttach()
+          }, 2000)
+
+    this.Data.getAllData().subscribe((data:any) => {
+      this.dataSourceStatic = new MatTableDataSource(data);
+      this.dataSourceStatic.paginator = this.paginator;
+    })
+        
+
+  }
+
+  dataOnAttach(){
+
     this.Data.getData().subscribe((data:any)  => {
 
-      data.data.forEach( (element, index) => {
-        data.data[index].Date = data.data[index].Date.substring(0, 10)
+      this.CarbonDioxide = data.map(data => data.CarbonDiokside)
+      this.Humidity = data.map(data => data.Humadity)
+      this.Temperature = data.map(data => data.Temperatur)
+      this.Time = data.map(data => data.Time)
+
+      if(this.selected == 0)
+      this.chartCO = new Chart('canvasCO2', {
+        type: 'line',
+        data: {
+          labels: this.Time,
+          datasets: [
+            {
+              data: this.CarbonDioxide,
+              borderColor: "#3cba9f",
+              fill: false
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true
+            }],
+            yAxes: [{
+              display: true
+            }],
+          }
+        }
       })
 
-      this.chartKarbonDioksida = this.onChartData(data['data'].map(data => data.Date),data['data'].map(data => data.CarbonDiokside), 'canvas')
-      this.chartKelembaban = this.onChartData(data['data'].map(data => data.Date),data['data'].map(data => data.Humadity), 'canvas_')
-      this.chartTemperatur = this.onChartData(data['data'].map(data => data.Date),data['data'].map(data => data.Temperatur), 'canvas__')
-
-      this.dataSource = new MatTableDataSource(data.data);
-      this.dataSource.paginator = this.paginator;
-    })
-
-        setInterval(() => {
-          console.log("Loop LiveData")
-        }, 600);
-
-  }
-
-      onChartData(label, data, name){
-       return  new Chart(name, {
-            type: 'line',
-            data: {
-              labels: label,
-              datasets: [
-                {
-                  data: data,
-                  borderColor: "#3cba9f",
-                  fill: false
-                }
-              ]
-            },
-            options: {
-              legend: {
-                display: false
-              },
-              scales: {
-                xAxes: [{
-                  display: true
-                }],
-                yAxes: [{
-                  display: true
-                }],
-              }
+      if(this.selected == 1)
+      this.chartHumidity = new Chart('canvasHumidity', {
+        type: 'line',
+        data: {
+          labels: this.Time,
+          datasets: [
+            {
+              data: this.Humidity,
+              borderColor: "#3cba9f",
+              fill: false
             }
-          });
-      }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true
+            }],
+            yAxes: [{
+              display: true
+            }],
+          }
+        }
+      })
 
-}
+      if(this.selected == 2)
+      this.chartTemperature = new Chart('canvasTemperature', {
+        type: 'line',
+        data: {
+          labels: this.Time,
+          datasets: [
+            {
+              data: this.Temperature,
+              borderColor: "#3cba9f",
+              fill: false
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true
+            }],
+            yAxes: [{
+              display: true
+            }],
+          }
+        }
+      })
 
-export interface Elements {
-  status : number;
-  data : {
-    id: number;
-    Date: string;
-    CarbonDiokside: string;
-    Humadity: string;
-    Temperatur : string;
+      this.dataSource = new MatTableDataSource(data);
+      this.visible = true;
+
+    })
   }
+
+
 }
+
+
