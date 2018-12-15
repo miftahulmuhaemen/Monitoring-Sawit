@@ -12,7 +12,7 @@ Projek template ini berdasarkan Angular 7 dan bisa dijalankan dengan, `ng serve`
 ![monitoring-sawit screenshot](https://raw.githubusercontent.com/miftahulmuhaemen/Monitoring-Sawit/master/Upload/3.JPG)
 ![monitoring-sawit screenshot](https://raw.githubusercontent.com/miftahulmuhaemen/Monitoring-Sawit/master/Upload/4.JPG)
 ![monitoring-sawit screenshot](https://raw.githubusercontent.com/miftahulmuhaemen/Monitoring-Sawit/master/Upload/5.JPG)
-![monitoring-sawit screenshot](https://raw.githubusercontent.com/miftahulmuhaemen/Monitoring-Sawit/master/Upload/6JPG)
+![monitoring-sawit screenshot](https://raw.githubusercontent.com/miftahulmuhaemen/Monitoring-Sawit/master/Upload/6.JPG)
 
 # Penulis
 
